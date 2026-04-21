@@ -119,6 +119,13 @@
       ]
     },
     {
+      "category": "database",
+      "source": "apt",
+      "packages": [
+        "postgresql-client"
+      ]
+    },
+    {
       "category": "go",
       "source": "script",
       "packages": [

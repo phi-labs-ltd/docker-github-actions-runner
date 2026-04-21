@@ -47,6 +47,8 @@ package:
 file:
   /usr/local/bin/ansible:
     exists: true
+  /usr/bin/psql:
+    exists: true
   /usr/local/go/bin/go:
     exists: true
   /usr/local/cargo/bin/cargo:

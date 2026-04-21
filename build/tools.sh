@@ -136,8 +136,13 @@ function install_rust() {
   export CARGO_HOME=/usr/local/cargo
 
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
-    | sh -s -- -y --no-modify-path --profile minimal --default-toolchain stable \
-        --component rustfmt --component clippy
+    | sh -s -- -y --no-modify-path --profile default --default-toolchain stable
+
+  "${CARGO_HOME}/bin/rustup" show active-toolchain
+  "${CARGO_HOME}/bin/cargo" --version
+  "${CARGO_HOME}/bin/rustc" --version
+  "${CARGO_HOME}/bin/rustfmt" --version
+  "${CARGO_HOME}/bin/cargo-clippy" --version
 
   chmod -R a+w "$RUSTUP_HOME" "$CARGO_HOME"
 

@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build_and_push_base:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       ORG: ${{ vars.DOCKER_ORG || github.repository_owner }}
     steps:
@@ -47,7 +47,7 @@ jobs:
               .
 
   build_and_push_runner:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build_and_push_base
     env:
       ORG: ${{ vars.DOCKER_ORG || github.repository_owner }}

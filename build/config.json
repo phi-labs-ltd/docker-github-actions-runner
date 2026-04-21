@@ -110,6 +110,27 @@
       "packages": [
         "yq"
       ]
+    },
+    {
+      "category": "ansible",
+      "source": "script",
+      "packages": [
+        "ansible"
+      ]
+    },
+    {
+      "category": "go",
+      "source": "script",
+      "packages": [
+        "go"
+      ]
+    },
+    {
+      "category": "rust",
+      "source": "script",
+      "packages": [
+        "rust"
+      ]
     }
   ]
 }

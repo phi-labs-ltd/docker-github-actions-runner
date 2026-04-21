@@ -45,6 +45,18 @@ package:
         installed: true
     {{ end }}
 file:
+  /usr/local/bin/ansible:
+    exists: true
+  /usr/local/go/bin/go:
+    exists: true
+  /usr/local/cargo/bin/cargo:
+    exists: true
+  /usr/local/cargo/bin/rustc:
+    exists: true
+  /usr/local/cargo/bin/rustfmt:
+    exists: true
+  /usr/local/cargo/bin/cargo-clippy:
+    exists: true
   /usr/bin/gh:
     exists: true
   /usr/bin/nodejs:

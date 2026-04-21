@@ -110,6 +110,45 @@ function install_powershell() {
   ln -s /opt/powershell/pwsh /usr/bin/pwsh
 }
 
+function install_ansible() {
+  pip3 install --no-cache-dir ansible
+}
+
+function install_go() {
+  local DPKG_ARCH GO_VERSION GO_DOWNLOAD_URL
+  DPKG_ARCH="$(dpkg --print-architecture)"
+
+  GO_VERSION=$(curl -sSL https://go.dev/VERSION?m=text | head -n 1 | sed 's/^go//')
+
+  GO_DOWNLOAD_URL="https://go.dev/dl/go${GO_VERSION}.linux-${DPKG_ARCH}.tar.gz"
+
+  curl -sSL "${GO_DOWNLOAD_URL}" -o /tmp/go.tar.gz
+  rm -rf /usr/local/go
+  tar -C /usr/local -xzf /tmp/go.tar.gz
+  rm /tmp/go.tar.gz
+
+  ln -sf /usr/local/go/bin/go /usr/local/bin/go
+  ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
+}
+
+function install_rust() {
+  export RUSTUP_HOME=/usr/local/rustup
+  export CARGO_HOME=/usr/local/cargo
+
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+    | sh -s -- -y --no-modify-path --profile minimal --default-toolchain stable \
+        --component rustfmt --component clippy
+
+  chmod -R a+w "$RUSTUP_HOME" "$CARGO_HOME"
+
+  local bin
+  for bin in cargo rustc rustup rustdoc rustfmt cargo-fmt cargo-clippy clippy-driver; do
+    if [[ -x "${CARGO_HOME}/bin/${bin}" ]]; then
+      ln -sf "${CARGO_HOME}/bin/${bin}" "/usr/local/bin/${bin}"
+    fi
+  done
+}
+
 function install_tools() {
   local function_name
   # shellcheck source=/dev/null

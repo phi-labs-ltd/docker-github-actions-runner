@@ -13,4 +13,4 @@ RUN /tmp/build/install_base.sh
 ENV GOROOT=/usr/local/go
 ENV RUSTUP_HOME=/usr/local/rustup
 ENV CARGO_HOME=/usr/local/cargo
-ENV PATH=/usr/local/go/bin:/usr/local/cargo/bin:${PATH}
+ENV PATH=/usr/local/go/bin:/usr/local/cargo/bin:/root/.local/bin:${PATH}

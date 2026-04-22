@@ -56,6 +56,7 @@ function install_container-tools() {
 }
 
 function install_github-cli() {
+  export PIP_BREAK_SYSTEM_PACKAGES=1
   local DPKG_ARCH GH_CLI_VERSION GH_CLI_DOWNLOAD_URL
 
   DPKG_ARCH="$(dpkg --print-architecture)"
@@ -111,6 +112,7 @@ function install_powershell() {
 }
 
 function install_ansible() {
+  export PIP_BREAK_SYSTEM_PACKAGES=1
   pip3 install --no-cache-dir ansible
 }
 

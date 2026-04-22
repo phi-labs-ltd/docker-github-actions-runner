@@ -1,4 +1,4 @@
-name: Build and Push Ubuntu noble to Docker Hub
+name: Build and Push Ubuntu Jammy to Docker Hub
 on:
   push:
     branches:
@@ -22,8 +22,8 @@ jobs:
           image: tonistiigi/binfmt:qemu-v7.0.0
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
-      - name: Rewrite Dockerfile.base FROM to ubuntu:noble
-        run: sed -i.bak 's|^FROM.*|FROM ubuntu:noble|' Dockerfile.base
+      - name: Rewrite Dockerfile.base FROM to debian:trixie
+        run: sed -i.bak 's|^FROM.*|FROM debian:trixie|' Dockerfile.base
       - name: Login to DockerHub
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
@@ -38,7 +38,7 @@ jobs:
             docker buildx build \
               --file Dockerfile.base \
               --platform linux/amd64,linux/arm64 \
-              --tag ${ORG}/github-runner-base:ubuntu-noble \
+              --tag ${ORG}/github-runner-base:debian-trixie \
               --tag ${ORG}/github-runner-base:latest \
               --push \
               --pull \
@@ -60,8 +60,8 @@ jobs:
           image: tonistiigi/binfmt:qemu-v7.0.0
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
-      - name: Rewrite Dockerfile FROM to use our ubuntu-noble base
-        run: sed -i.bak "s|^FROM.*|FROM ${ORG}/github-runner-base:ubuntu-noble|" Dockerfile
+      - name: Rewrite Dockerfile FROM to use our debian-trixie base
+        run: sed -i.bak "s|^FROM.*|FROM ${ORG}/github-runner-base:debian-trixie|" Dockerfile
       - name: Login to DockerHub
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
@@ -76,7 +76,7 @@ jobs:
             docker buildx build \
               --file Dockerfile \
               --platform linux/amd64,linux/arm64 \
-              --tag ${ORG}/github-runner:ubuntu-noble \
+              --tag ${ORG}/github-runner:debian-trixie \
               --tag ${ORG}/github-runner:latest \
               --push \
               --pull \

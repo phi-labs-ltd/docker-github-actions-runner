@@ -77,7 +77,8 @@
         "inetutils-ping",
         "wget",
         "openssh-client",
-        "rsync"
+        "rsync",
+        "netcat-openbsd"
       ]
     },
     {

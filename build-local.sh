@@ -110,12 +110,14 @@ build_runner() {
   trap "rm -f '$tmp'" RETURN
   sed "s|^FROM.*|FROM ${BASE_TAG}|" Dockerfile > "$tmp"
 
+  # No --pull here: the base image may only exist locally (just built by build_base).
+  # If you want to rebuild against a fresh registry copy of the base, push/pull it
+  # first, or run `docker pull ${BASE_TAG}` before re-running with -s runner.
   docker buildx build \
     --file "$tmp" \
     --platform "$PLATFORM" \
     --tag "$RUNNER_TAG" \
     --tag "$RUNNER_LATEST" \
-    --pull \
     "${output_flag[@]}" \
     .
 }

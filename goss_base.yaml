@@ -17,6 +17,8 @@ package:
         installed: true
     make:
         installed: true
+    netcat-openbsd:
+        installed: true
     pwsh:
         installed: false
     python3:

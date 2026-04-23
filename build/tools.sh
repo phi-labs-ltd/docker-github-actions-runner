@@ -140,7 +140,7 @@ function install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --no-modify-path --profile default --default-toolchain stable
 
-  "${CARGO_HOME}/bin/rustup" toolchain install nightly --component rustfmt clippy --profile minimal
+  "${CARGO_HOME}/bin/rustup" toolchain install nightly --profile minimal --component rustfmt --component clippy
 
   "${CARGO_HOME}/bin/rustup" show
   "${CARGO_HOME}/bin/cargo" --version

@@ -17,6 +17,7 @@
       "source": "apt",
       "packages": [
         "build-essential",
+        "binutils",
         "lsb-release",
         "zlib1g-dev",
         "zstd",
@@ -24,7 +25,8 @@
         "libcurl4-openssl-dev",
         "libpq-dev",
         "pkg-config",
-        "libyaml-dev"
+        "libyaml-dev",
+        "just"
       ]
     },
     {
@@ -85,7 +87,15 @@
       "category": "node",
       "source": "apt",
       "packages": [
-        "nodejs"
+        "nodejs",
+        "npm"
+      ]
+    },
+    {
+      "category": "node-tools",
+      "source": "script",
+      "packages": [
+        "quint"
       ]
     },
     {
@@ -103,6 +113,13 @@
         "python3-pip",
         "python3-setuptools",
         "python3-venv"
+      ]
+    },
+    {
+      "category": "python-tools",
+      "source": "script",
+      "packages": [
+        "check-jsonschema"
       ]
     },
     {
@@ -137,7 +154,9 @@
       "category": "rust",
       "source": "script",
       "packages": [
-        "rust"
+        "rust",
+        "cargo-nextest",
+        "cargo-machete"
       ]
     }
   ]

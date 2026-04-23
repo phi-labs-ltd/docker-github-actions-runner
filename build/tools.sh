@@ -140,11 +140,15 @@ function install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --no-modify-path --profile default --default-toolchain stable
 
-  "${CARGO_HOME}/bin/rustup" show active-toolchain
+  "${CARGO_HOME}/bin/rustup" toolchain install nightly --component rustfmt clippy --profile minimal
+
+  "${CARGO_HOME}/bin/rustup" show
   "${CARGO_HOME}/bin/cargo" --version
   "${CARGO_HOME}/bin/rustc" --version
   "${CARGO_HOME}/bin/rustfmt" --version
   "${CARGO_HOME}/bin/cargo-clippy" --version
+  "${CARGO_HOME}/bin/cargo" +nightly --version
+  "${CARGO_HOME}/bin/rustc" +nightly --version
 
   # chmod -R a+w "$RUSTUP_HOME" "$CARGO_HOME"
 
@@ -154,6 +158,56 @@ function install_rust() {
       ln -sf "${CARGO_HOME}/bin/${bin}" "/usr/local/bin/${bin}"
     fi
   done
+}
+
+function install_cargo-nextest() {
+  local DPKG_ARCH NEXTEST_URL
+  DPKG_ARCH="$(dpkg --print-architecture)"
+  case "${DPKG_ARCH}" in
+    amd64) NEXTEST_URL="https://get.nexte.st/latest/linux" ;;
+    arm64) NEXTEST_URL="https://get.nexte.st/latest/linux-arm" ;;
+    *) echo "Unsupported arch for cargo-nextest: ${DPKG_ARCH}"; exit 1 ;;
+  esac
+
+  curl -LsSf "${NEXTEST_URL}" | tar -xzf - -C /usr/local/cargo/bin cargo-nextest
+  chmod +x /usr/local/cargo/bin/cargo-nextest
+  ln -sf /usr/local/cargo/bin/cargo-nextest /usr/local/bin/cargo-nextest
+  cargo-nextest --version
+}
+
+function install_cargo-machete() {
+  local DPKG_ARCH TARGET MACHETE_VERSION MACHETE_URL
+  DPKG_ARCH="$(dpkg --print-architecture)"
+  case "${DPKG_ARCH}" in
+    amd64) TARGET="x86_64-unknown-linux-musl" ;;
+    arm64) TARGET="aarch64-unknown-linux-musl" ;;
+    *) echo "Unsupported arch for cargo-machete: ${DPKG_ARCH}"; exit 1 ;;
+  esac
+
+  MACHETE_VERSION=$(curl -sL -H "Accept: application/vnd.github+json" \
+    https://api.github.com/repos/bnjbvr/cargo-machete/releases/latest \
+      | jq -r '.tag_name' | sed 's/^v//g')
+
+  MACHETE_URL="https://github.com/bnjbvr/cargo-machete/releases/download/v${MACHETE_VERSION}/cargo-machete-v${MACHETE_VERSION}-${TARGET}.tar.gz"
+
+  curl -sSL "${MACHETE_URL}" -o /tmp/machete.tar.gz
+  tar -xzf /tmp/machete.tar.gz -C /tmp
+  mv "/tmp/cargo-machete-v${MACHETE_VERSION}-${TARGET}/cargo-machete" /usr/local/cargo/bin/cargo-machete
+  chmod +x /usr/local/cargo/bin/cargo-machete
+  ln -sf /usr/local/cargo/bin/cargo-machete /usr/local/bin/cargo-machete
+  rm -rf /tmp/machete.tar.gz "/tmp/cargo-machete-v${MACHETE_VERSION}-${TARGET}"
+  cargo-machete --version
+}
+
+function install_quint() {
+  npm install -g @informalsystems/quint
+  quint --version
+}
+
+function install_check-jsonschema() {
+  export PIP_BREAK_SYSTEM_PACKAGES=1
+  pip3 install --no-cache-dir check-jsonschema
+  check-jsonschema --version
 }
 
 function install_tools() {

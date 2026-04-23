@@ -133,7 +133,8 @@
       "category": "database",
       "source": "apt",
       "packages": [
-        "postgresql-client"
+        "postgresql-client",
+        "sqlite3"
       ]
     },
     {

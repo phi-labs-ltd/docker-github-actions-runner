@@ -199,6 +199,13 @@ function install_cargo-machete() {
   cargo-machete --version
 }
 
+function install_nodejs() {
+  curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+  apt-get install -y --no-install-recommends nodejs
+  node --version
+  npm --version
+}
+
 function install_quint() {
   npm install -g @informalsystems/quint
   quint --version

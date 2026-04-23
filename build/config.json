@@ -85,16 +85,9 @@
     },
     {
       "category": "node",
-      "source": "apt",
-      "packages": [
-        "nodejs",
-        "npm"
-      ]
-    },
-    {
-      "category": "node-tools",
       "source": "script",
       "packages": [
+        "nodejs",
         "quint"
       ]
     },

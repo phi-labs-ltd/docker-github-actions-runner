@@ -18,6 +18,9 @@
       "packages": [
         "build-essential",
         "binutils",
+        "clang",
+        "lld",
+        "mold",
         "lsb-release",
         "zlib1g-dev",
         "zstd",

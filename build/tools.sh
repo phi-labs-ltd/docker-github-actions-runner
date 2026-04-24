@@ -217,6 +217,34 @@ function install_check-jsonschema() {
   check-jsonschema --version
 }
 
+function install_sui() {
+  local DPKG_ARCH TARGET SUI_TAG SUI_VERSION SUI_URL bin
+  DPKG_ARCH="$(dpkg --print-architecture)"
+  case "${DPKG_ARCH}" in
+    amd64) TARGET="x86_64" ;;
+    arm64) TARGET="aarch64" ;;
+    *) echo "Unsupported arch for sui: ${DPKG_ARCH}"; exit 1 ;;
+  esac
+
+  SUI_TAG=$(curl -sL -H "Accept: application/vnd.github+json" \
+    "https://api.github.com/repos/MystenLabs/sui/releases?per_page=50" \
+      | jq -r '[.[] | select(.tag_name | startswith("mainnet-v")) | .tag_name] | first')
+  SUI_VERSION="${SUI_TAG#mainnet-}"
+
+  SUI_URL="https://github.com/MystenLabs/sui/releases/download/${SUI_TAG}/sui-mainnet-${SUI_VERSION}-ubuntu-${TARGET}.tgz"
+
+  mkdir -p /tmp/sui
+  curl -sSL "${SUI_URL}" -o /tmp/sui.tgz
+  tar -xzf /tmp/sui.tgz -C /tmp/sui
+  for bin in sui sui-node sui-test-validator sui-tool sui-bridge sui-bridge-cli sui-debug sui-faucet move-analyzer; do
+    if [[ -x "/tmp/sui/${bin}" ]]; then
+      install -m 0755 "/tmp/sui/${bin}" "/usr/local/bin/${bin}"
+    fi
+  done
+  rm -rf /tmp/sui /tmp/sui.tgz
+  sui --version
+}
+
 function install_tools() {
   local function_name
   # shellcheck source=/dev/null

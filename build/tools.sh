@@ -150,7 +150,7 @@ function install_rust() {
   "${CARGO_HOME}/bin/cargo" +nightly --version
   "${CARGO_HOME}/bin/rustc" +nightly --version
 
-  # chmod -R a+w "$RUSTUP_HOME" "$CARGO_HOME"
+  chmod -R a+w "$RUSTUP_HOME" "$CARGO_HOME"
 
   local bin
   for bin in cargo rustc rustup rustdoc rustfmt cargo-fmt cargo-clippy clippy-driver; do
